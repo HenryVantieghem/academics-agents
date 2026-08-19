@@ -9,6 +9,10 @@ of guessing about them.
 
 Zero third-party dependencies. Python 3.11+ and a Canvas token, nothing else.
 
+**Requirements:** Python 3.11 or later, git, and a Canvas account. Works on macOS,
+Windows, and Linux. Stuck at any point? [docs/troubleshooting.md](docs/troubleshooting.md)
+is matched to the exact error text.
+
 ---
 
 ## What you get
@@ -65,9 +69,10 @@ Close the terminal and open a new one, then check it worked:
 claude --version
 ```
 
-You should see a version number. If you get `command not found`, open a fresh
-terminal window first — the installer adds `claude` to a path the old window has
-not picked up yet.
+You should see a version number. If you get `command not found`, **close the
+terminal completely and open a new one** — the installer adds `claude` to a path
+your current window loaded before it existed. Anything else, see
+[docs/troubleshooting.md](docs/troubleshooting.md).
 
 ### 3. Log in
 
@@ -269,6 +274,21 @@ material past exam-lockdown controls.
 often split by assessment type — permitted on a project, forbidden on a quiz.
 Record the exact wording in the course context and follow it. Nothing in this
 repo submits anything; that is your action.
+
+## Documentation
+
+| File | What is in it |
+|---|---|
+| [SKILL.md](SKILL.md) | The agent's operating instructions — refresh first, reporting rules, scope |
+| [docs/assignment-production.md](docs/assignment-production.md) | How to produce a graded artifact without the eight failure modes that cost marks |
+| [docs/troubleshooting.md](docs/troubleshooting.md) | Every error message, matched to its fix |
+| [templates/](templates/) | The course-context and sub-skill stubs the agent fills in |
+
+## Contributing
+
+Issues and pull requests welcome. The engine is deliberately stdlib-only — please
+do not add a dependency without a strong reason, since the zero-install property
+is most of why this is usable by non-programmers.
 
 ## License
 

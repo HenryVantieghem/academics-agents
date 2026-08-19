@@ -23,12 +23,18 @@ STEPS = [
 
 def main() -> int:
     for i, (label, cmd) in enumerate(STEPS, 1):
-        print(f"\n[{i}/{len(STEPS)}] {label}")
-        print("-" * 70)
+        # flush before handing stdout to the child, or the child's output lands
+        # above our header and the error looks like it came from nowhere
+        print(f"\n[{i}/{len(STEPS)}] {label}", flush=True)
+        print("-" * 70, flush=True)
         r = subprocess.run(cmd, cwd=HERE)
         if r.returncode != 0:
-            print(f"\n  step failed: {label}")
-            print("  Fix the error above and re-run — completed steps are idempotent.")
+            print(f"\n  Step {i} failed: {label}")
+            print("  Fix the error printed above, then run this again.")
+            print("  Every step is idempotent, so re-running costs nothing.")
+            if i == 1:
+                print("\n  Most first-run failures are just a missing or wrong .env.")
+                print("  See the 'Setup, from nothing' section of README.md.")
             return r.returncode
     print("\n" + "=" * 70)
     subprocess.run([sys.executable, "dashboard.py"], cwd=HERE)
