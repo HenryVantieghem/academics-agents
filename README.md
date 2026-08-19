@@ -115,10 +115,32 @@ python3 scripts/init.py
 Your token stays hidden while you type it, and the file is written owner-only.
 If the token is wrong you find out immediately, rather than three steps later.
 
-Prefer to do it by hand? Copy `.env.example` to `.env` and fill in the two values
-in any text editor. `.env` is gitignored either way, so your token never gets
-committed, and the scripts read it automatically — there is nothing to `source`
-or `export`.
+<details>
+<summary><b>Prefer to do it without the helper?</b></summary>
+
+**One line, prompts you for both values** (Mac / Linux):
+
+```bash
+read -p "Canvas URL: " u && read -s -p "Token: " t && printf 'CANVAS_BASE_URL=%s\nCANVAS_TOKEN=%s\n' "$u" "$t" > .env && chmod 600 .env && echo " saved"
+```
+
+Windows PowerShell:
+
+```powershell
+$u = Read-Host "Canvas URL"; $t = Read-Host "Token" -AsSecureString
+"CANVAS_BASE_URL=$u`nCANVAS_TOKEN=$([Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($t)))" | Set-Content .env
+```
+
+**Or by hand:** copy `.env.example` to `.env` and fill in the two values in any
+text editor.
+
+Both work, but neither checks the token. A bad paste fails later during harvest
+instead of immediately, which is the main reason `init.py` exists.
+
+</details>
+
+`.env` is gitignored however you create it, so your token never gets committed,
+and the scripts read it automatically — there is nothing to `source` or `export`.
 
 ### 6. Build everything
 
