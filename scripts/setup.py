@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+ENV_FILE = HERE.parent / ".env"
 STEPS = [
     ("discovering your courses",        [sys.executable, "discover.py"]),
     ("creating the course folders",     [sys.executable, "scaffold.py"]),
@@ -22,6 +23,12 @@ STEPS = [
 
 
 def main() -> int:
+    if not ENV_FILE.exists():
+        print("\n  No .env yet — starting the interactive setup first.")
+        r = subprocess.run([sys.executable, "init.py"], cwd=HERE)
+        if r.returncode != 0 or not ENV_FILE.exists():
+            return r.returncode or 1
+
     for i, (label, cmd) in enumerate(STEPS, 1):
         # flush before handing stdout to the child, or the child's output lands
         # above our header and the error looks like it came from nowhere

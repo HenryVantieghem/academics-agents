@@ -105,30 +105,20 @@ git clone https://github.com/HenryVantieghem/academics-agents.git
 cd academics-agents
 ```
 
-Now write your token into a `.env` file. Replace both values with your own:
-
-**Mac / Linux**
+Now run the setup helper. It asks for your Canvas address and token, checks the
+token against Canvas straight away, and writes the `.env` file for you:
 
 ```bash
-cat > .env <<'EOF'
-CANVAS_BASE_URL=https://myschool.instructure.com
-CANVAS_TOKEN=paste_your_token_here
-EOF
+python3 scripts/init.py
 ```
 
-**Windows PowerShell**
+Your token stays hidden while you type it, and the file is written owner-only.
+If the token is wrong you find out immediately, rather than three steps later.
 
-```powershell
-@"
-CANVAS_BASE_URL=https://myschool.instructure.com
-CANVAS_TOKEN=paste_your_token_here
-"@ | Set-Content .env
-```
-
-Or just open `.env.example`, copy it to `.env`, and edit it in any text editor.
-
-`.env` is gitignored, so your token never gets committed. The scripts read it
-automatically — there is nothing to `source` or `export`.
+Prefer to do it by hand? Copy `.env.example` to `.env` and fill in the two values
+in any text editor. `.env` is gitignored either way, so your token never gets
+committed, and the scripts read it automatically — there is nothing to `source`
+or `export`.
 
 ### 6. Build everything
 
@@ -233,7 +223,8 @@ fails with a confusing "CANVAS_TOKEN is not set" on a token you just pasted.
 
 | Script | What it does |
 |---|---|
-| `setup.py` | discover → scaffold → harvest → baseline → dashboard |
+| `init.py` | asks for your Canvas address and token, verifies it, writes `.env` |
+| `setup.py` | runs `init.py` if needed, then discover → scaffold → harvest → baseline → dashboard |
 | `discover.py` | active enrollments → `data/courses.json` |
 | `harvest.py` | all Canvas content → markdown; downloads files |
 | `scaffold.py` | per-course folders + context/skill stubs (never overwrites) |
