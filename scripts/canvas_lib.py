@@ -39,6 +39,30 @@ COURSES_JSON = DATA_DIR / "courses.json"
 _TZ_CACHE: ZoneInfo | None = None
 
 
+def _load_dotenv() -> None:
+    """Read .env into the environment if the vars are not already set.
+
+    Doing this in code rather than telling people to run `set -a && source .env`
+    matters: that incantation is bash-only, so on Windows PowerShell it fails and
+    the user gets a confusing "CANVAS_TOKEN is not set" on a token they just
+    pasted. Real environment variables always win over the file.
+    """
+    env_file = REPO_ROOT / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, val = line.partition("=")
+        key, val = key.strip(), val.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = val
+
+
+_load_dotenv()
+
+
 class CanvasError(RuntimeError):
     """Anything that should stop the caller with an actionable message."""
 
@@ -49,7 +73,9 @@ def base_url() -> str:
         raise CanvasError(
             "CANVAS_BASE_URL is not set.\n"
             "  It is the root of your school's Canvas, e.g. https://school.instructure.com\n"
-            "  Copy .env.example to .env, fill it in, then:  set -a && source .env && set +a"
+            "  Put it in a .env file at the repo root:\n"
+            "      CANVAS_BASE_URL=https://myschool.instructure.com\n"
+            "  The scripts read .env automatically — nothing to source."
         )
     if not raw.startswith(("http://", "https://")):
         raw = "https://" + raw
@@ -63,7 +89,9 @@ def token() -> str:
             "CANVAS_TOKEN is not set.\n"
             "  Generate one at <your Canvas>/profile/settings\n"
             "  -> Approved Integrations -> + New Access Token.\n"
-            "  Then:  set -a && source .env && set +a"
+            "  Canvas shows it once — copy it immediately.\n"
+            "  Then add it to the .env file at the repo root:\n"
+            "      CANVAS_TOKEN=your_token_here"
         )
     return tok
 

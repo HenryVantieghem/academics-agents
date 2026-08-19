@@ -29,10 +29,11 @@ assignments, attach rubrics, and **move due dates** continuously. Answering from
 yesterday's snapshot is how a moved deadline gets missed.
 
 ```bash
-set -a && source .env && set +a
 python3 scripts/refresh.py      # ALWAYS first — reports what changed
 python3 scripts/dashboard.py    # then answer from this
 ```
+
+The scripts read `.env` themselves; nothing needs sourcing.
 
 `refresh.py` prints `no changes` in seconds when nothing moved. **Lead your answer
 with anything it flagged** — a due date that moved outranks the deadline list.

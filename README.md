@@ -35,39 +35,116 @@ scripts/                       the engine
 
 ---
 
-## Setup
+## Setup, from nothing
 
-### 1. Get a Canvas token
+You do not need to know how to code. You need a terminal, about ten minutes, and
+a Canvas account.
 
-Your Canvas → **Account → Settings → Approved Integrations → + New Access Token**.
-Copy it immediately; Canvas shows it once.
+### 1. Open a terminal
 
-### 2. Configure
+**Mac:** press `Cmd + Space`, type `Terminal`, press Enter.
+**Windows:** press the Start key, type `PowerShell`, press Enter.
+
+### 2. Install Claude Code
+
+**Mac / Linux / WSL**
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+**Windows PowerShell**
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+Close the terminal and open a new one, then check it worked:
+
+```bash
+claude --version
+```
+
+You should see a version number. If you get `command not found`, open a fresh
+terminal window first — the installer adds `claude` to a path the old window has
+not picked up yet.
+
+### 3. Log in
+
+```bash
+claude
+```
+
+This opens your browser to sign in. Claude Code needs a Pro, Max, Team, or
+Enterprise plan; the free Claude.ai tier does not include it. Once you are signed
+in, type `/exit` to come back to the terminal.
+
+### 4. Get your Canvas access token
+
+1. Open Canvas
+2. Click **Account** in the far-left sidebar, then **Settings**
+3. **Scroll all the way down** to the **Approved Integrations** section
+4. Press **+ New Access Token**
+5. Give it a purpose like `academics-agents`. Leave the expiry date **blank** so
+   it does not stop working mid-semester. Press **Generate Token**
+6. **Copy it right now.** Canvas shows the token exactly once and there is no way
+   to see it again. If you lose it, delete that entry and generate a new one.
+
+You also need your Canvas web address — whatever is in the browser bar, for
+example `https://myschool.instructure.com`.
+
+### 5. Get the code and add your token
 
 ```bash
 git clone https://github.com/HenryVantieghem/academics-agents.git
 cd academics-agents
-cp .env.example .env
-$EDITOR .env          # CANVAS_BASE_URL and CANVAS_TOKEN
 ```
 
-### 3. Build everything
+Now write your token into a `.env` file. Replace both values with your own:
+
+**Mac / Linux**
 
 ```bash
-set -a && source .env && set +a
+cat > .env <<'EOF'
+CANVAS_BASE_URL=https://myschool.instructure.com
+CANVAS_TOKEN=paste_your_token_here
+EOF
+```
+
+**Windows PowerShell**
+
+```powershell
+@"
+CANVAS_BASE_URL=https://myschool.instructure.com
+CANVAS_TOKEN=paste_your_token_here
+"@ | Set-Content .env
+```
+
+Or just open `.env.example`, copy it to `.env`, and edit it in any text editor.
+
+`.env` is gitignored, so your token never gets committed. The scripts read it
+automatically — there is nothing to `source` or `export`.
+
+### 6. Build everything
+
+```bash
 python3 scripts/setup.py
 ```
 
-That discovers your courses, creates the folder tree, harvests all Canvas
-content, records a change baseline, and prints your dashboard.
+That discovers your courses, creates a folder per class, harvests everything
+Canvas exposes, records a baseline for change detection, and prints your
+dashboard. It takes a minute or two depending on how many courses you have.
 
-### 4. Hand the agent the prompt below
+### 7. Hand the agent the prompt
 
-`setup.py` leaves the per-course files as **stubs full of `UNKNOWN` markers** —
-on purpose. Turning them into real expertise means reading each syllabus and
-deciding what matters, which a script cannot do and should not fake.
+```bash
+claude
+```
 
----
+Then paste the prompt in the next section. `setup.py` deliberately leaves the
+per-course files as **stubs full of `UNKNOWN` markers** — turning those into real
+expertise means reading each syllabus and deciding what matters, which a script
+cannot do and should not fake.
 
 ## The bootstrap prompt
 
@@ -77,9 +154,9 @@ Paste this into Claude Code (or any coding agent) from inside the repo:
 You are setting up my academics command centre in this repository.
 
 SETUP
-1. Confirm .env has CANVAS_BASE_URL and CANVAS_TOKEN, then:
-      set -a && source .env && set +a
+1. Confirm .env has CANVAS_BASE_URL and CANVAS_TOKEN, then run:
       python3 scripts/setup.py
+   (The scripts read .env themselves — nothing needs sourcing or exporting.)
    If a step fails, fix it and re-run — every step is idempotent.
 
 2. Read SKILL.md and docs/assignment-production.md before doing anything else.
@@ -140,10 +217,14 @@ RULES
 ## Daily use
 
 ```bash
-set -a && source .env && set +a
+cd academics-agents
 python3 scripts/refresh.py       # what changed — read this first
 python3 scripts/dashboard.py     # what is due
 ```
+
+The scripts read `.env` themselves, so there is nothing to source or export. That
+is deliberate: `set -a && source .env` is bash-only, and on Windows PowerShell it
+fails with a confusing "CANVAS_TOKEN is not set" on a token you just pasted.
 
 | Script | What it does |
 |---|---|
