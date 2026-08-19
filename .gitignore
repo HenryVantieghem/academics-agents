@@ -1,0 +1,8 @@
+.env
+data/courses.json
+data/last-seen.json
+data/SCHEDULE.md
+courses/
+__pycache__/
+*.pyc
+.DS_Store
