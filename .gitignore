@@ -6,3 +6,6 @@ courses/
 __pycache__/
 *.pyc
 .DS_Store
+
+# A nested clone, if someone runs the README git clone from inside the repo
+/academics-agents/
