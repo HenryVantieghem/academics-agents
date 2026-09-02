@@ -10,7 +10,8 @@ of guessing about them.
 Zero third-party dependencies. Python 3.11+ and a Canvas token, nothing else.
 
 **Requirements:** Python 3.11 or later, git, and a Canvas account. Works on macOS,
-Windows, and Linux. Stuck at any point? [docs/troubleshooting.md](docs/troubleshooting.md)
+Windows, and Linux. Not sure you have git and Python? See
+[Before you start](#before-you-start). Stuck at any point? [docs/troubleshooting.md](docs/troubleshooting.md)
 is matched to the exact error text.
 
 ---
@@ -36,6 +37,56 @@ scripts/                       the engine
   own logged-in session: Gradescope, publisher tools, quiz engines), or `none`
   (in class). This is not obvious from the API and it decides what help is even
   possible.
+
+---
+
+## Before you start
+
+Two things have to exist before step 1, and both checks take ten seconds. If you
+have ever cloned a repo on this machine, you almost certainly have both already.
+
+### git
+
+```bash
+git --version
+```
+
+A version number means you are done. On a Mac with nothing installed yet, that
+command makes macOS pop up a dialog offering the **command line developer tools**
+— click Install and wait a few minutes. That package contains git and it is the
+only thing you need; you do not need the full Xcode download. You can also start
+it yourself:
+
+```bash
+xcode-select --install
+```
+
+If it answers that the software "is not currently available", the tools are
+already there. Close the terminal, open a new one, and run `git --version` again.
+
+### Python 3.11 or later
+
+```bash
+python3 --version
+```
+
+macOS ships a `python3`, but which version depends on your macOS release and it
+is often older than 3.11. If yours is below 3.11, get the current release from
+[python.org/downloads](https://www.python.org/downloads/) — take the macOS
+64-bit universal2 installer, click through it, then **open a new terminal** and
+check again. No Homebrew, no pyenv, no virtual environment. This repo has zero
+third-party dependencies, so a plain system Python is all it wants.
+
+### Windows and Linux
+
+**Windows:** install git from [git-scm.com/download/win](https://git-scm.com/download/win)
+and Python from [python.org](https://www.python.org/downloads/). In the Python
+installer, tick **Add python.exe to PATH** on the first screen — missing that box
+is the single most common Windows problem, and it makes `python3` fail with
+"not recognized" later.
+
+**Linux:** your package manager has both. On Debian or Ubuntu,
+`sudo apt install git python3`.
 
 ---
 
@@ -231,6 +282,64 @@ RULES
 
 ---
 
+---
+
+## Using Cursor instead of Claude Code
+
+Everything above holds; only steps 2, 3 and 7 change. The repo is plain Python
+and plain markdown, so any coding agent that can read files and run terminal
+commands can drive it.
+
+### 1. Install Cursor
+
+Download it from [cursor.com](https://cursor.com), drag it to Applications, and
+sign in when it opens. **Skip steps 2 and 3 above** — you do not need Claude Code
+installed at all.
+
+### 2. Do steps 4, 5 and 6 exactly as written
+
+Generate your Canvas token, clone the repo, run `init.py`, run `setup.py`.
+Cursor has a built-in terminal (**Terminal → New Terminal**, or Ctrl + `` ` ``)
+and every command above runs there unchanged.
+
+### 3. Open the folder, not a file
+
+**File → Open Folder**, then choose the `academics-agents` folder you cloned.
+
+Open the folder itself. The agent only sees what is in the open workspace, and
+opening a single file instead is the most common reason it reports that it cannot
+find `scripts/setup.py`.
+
+### 4. Use Agent mode, not Ask mode
+
+Open the chat pane and switch the mode selector to **Agent**. Agent is the mode
+allowed to edit files and run commands; Ask can read but cannot write, so the
+setup appears to be working and then produces nothing.
+
+### 5. Paste the bootstrap prompt
+
+The same [bootstrap prompt](#the-bootstrap-prompt) as above, unchanged.
+
+Cursor asks you to approve each terminal command it wants to run. Approve them —
+they are the `python3 scripts/*.py` calls already listed in this README. If
+clicking through each one gets tedious you can allowlist `python3` in the agent's
+terminal settings, but read what you are allowing before you do.
+
+### What makes it behave
+
+This repo ships [`.cursor/rules/academics-agents.mdc`](.cursor/rules/academics-agents.mdc).
+Cursor loads it automatically whenever the folder is open, and it points the agent
+at `SKILL.md` — the same operating rules Claude Code reads. That is what keeps
+both agents honest about the two that matter: never state a deadline from memory,
+and never invent a fact about a course.
+
+### Other agents
+
+Nothing else here is agent-specific. Codex, Windsurf, Zed, and Copilot agent mode
+all work through the same three ingredients: an open folder, terminal access, and
+the bootstrap prompt. If your agent has a project-rules mechanism, point it at
+`SKILL.md` the way the Cursor rule does.
+
 ## Daily use
 
 ```bash
@@ -296,6 +405,7 @@ repo submits anything; that is your action.
 | [docs/assignment-production.md](docs/assignment-production.md) | How to produce a graded artifact without the eight failure modes that cost marks |
 | [docs/troubleshooting.md](docs/troubleshooting.md) | Every error message, matched to its fix |
 | [templates/](templates/) | The course-context and sub-skill stubs the agent fills in |
+| [.cursor/rules/](.cursor/rules/) | Project rule so Cursor's agent loads `SKILL.md` automatically |
 
 ## Contributing
 

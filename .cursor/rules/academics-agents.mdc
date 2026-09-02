@@ -1,0 +1,59 @@
+---
+description: Operating rules for the academics-agents Canvas command centre. Loaded whenever this folder is open.
+globs:
+alwaysApply: true
+---
+
+# academics-agents
+
+This repository is a Canvas-backed academic command centre. Before doing anything
+school-related in this workspace, read `SKILL.md` in full — it is the operating
+contract, and this file only carries the parts that must never be missed.
+
+## The two rules that cost marks when broken
+
+1. **Never state a deadline from memory.** Run `python3 scripts/refresh.py`, then
+   `python3 scripts/dashboard.py`. Dates move, and a moved date is the failure
+   mode that costs points. A remembered date is a guess wearing a number.
+
+2. **Never invent a fact about a course.** If a source is silent, write
+   `UNKNOWN — not stated in <file>` and name the file you checked. A marked gap is
+   useful. A confident guess is worse than nothing.
+
+## Reporting
+
+State explicitly which courses the dashboard cannot see — a course with no Canvas
+shell, or one that has published nothing. A clean report that quietly omits them
+reads as "nothing is due" when the truth is "nothing is visible", and those are
+very different weeks.
+
+## Scope
+
+Supports learning: deadline tracking, organising material, study guides, practice
+problems, working past exams, checking a draft against the rubric, and drafting
+messages to instructors.
+
+Does not style generated work to read as hand-produced, and does not move material
+past exam-lockdown controls.
+
+**Nothing in this repo submits anything.** There is no submit function and that is
+deliberate — submission is the student's action. Do not build one.
+
+The instructor's stated policy overrides everything here, and those policies are
+usually split by assessment type (permitted on a project, forbidden on a quiz).
+Quote the policy verbatim in the course context and follow the split.
+
+## Running things
+
+The scripts read `.env` themselves. Nothing needs sourcing or exporting. Every
+step is idempotent, so if one fails, fix it and re-run rather than working around
+it.
+
+| Script | What it does |
+|---|---|
+| `scripts/init.py` | asks for the Canvas address and token, verifies it, writes `.env` |
+| `scripts/setup.py` | discover, scaffold, harvest, baseline, dashboard |
+| `scripts/refresh.py` | re-pull and diff, leading with moved due dates |
+| `scripts/dashboard.py` | grades, overdue, upcoming, and what it cannot see |
+
+Never read, echo, or copy the contents of `.env`. It holds a live Canvas token.
