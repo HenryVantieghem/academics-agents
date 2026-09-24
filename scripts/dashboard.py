@@ -69,11 +69,20 @@ def collect(days: int) -> dict:
             "no_data": blind}
 
 
+def without_grades(d: dict) -> dict:
+    """Drop course grades and per-assignment scores, for screen-sharing and recording."""
+    def strip(rows: list) -> list:
+        return [{k: v for k, v in r.items() if k != "score"} for r in rows]
+    return {**d, "grades": [], "overdue": strip(d["overdue"]),
+            "upcoming": strip(d["upcoming"]), "undated": strip(d["undated"])}
+
+
 def render(d: dict, days: int) -> None:
     bar = "=" * 74
     print(f"\n{bar}\n  ACADEMICS  |  {d['generated'][:16].replace('T', ' ')}\n{bar}\n")
 
-    print("GRADES")
+    if d["grades"]:
+        print("GRADES")
     for g in d["grades"]:
         s = f"{g['score']:.1f}%" if g["score"] is not None else "  --  "
         print(f"  {g['code']:<14} {s:>8}   {(g['name'] or '')[:42]}")
@@ -110,8 +119,12 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=14)
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--hide-grades", action="store_true",
+                    help="leave out grades and scores (for screen-sharing or recording)")
     a = ap.parse_args()
     d = collect(a.days)
+    if a.hide_grades:
+        d = without_grades(d)
     if a.json:
         print(json.dumps(d, indent=2))
     else:

@@ -345,7 +345,7 @@ the bootstrap prompt. If your agent has a project-rules mechanism, point it at
 ```bash
 cd academics-agents
 python3 scripts/refresh.py       # what changed — read this first
-python3 scripts/dashboard.py     # what is due
+python3 scripts/dashboard.py     # what is due (add --hide-grades when sharing your screen)
 ```
 
 The scripts read `.env` themselves, so there is nothing to source or export. That
