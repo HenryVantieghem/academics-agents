@@ -2,6 +2,7 @@
 """One-shot setup: discover -> scaffold -> harvest -> baseline -> dashboard.
 
     python3 scripts/setup.py
+    python3 scripts/setup.py --hide-grades   # same, but the closing dashboard leaves out grades
 
 Everything it runs is idempotent, so re-running is safe.
 """
@@ -44,7 +45,8 @@ def main() -> int:
                 print("  See the 'Setup, from nothing' section of README.md.")
             return r.returncode
     print("\n" + "=" * 70)
-    subprocess.run([sys.executable, "dashboard.py"], cwd=HERE)
+    passthrough = [a for a in sys.argv[1:] if a == "--hide-grades"]
+    subprocess.run([sys.executable, "dashboard.py", *passthrough], cwd=HERE)
     print("""
   Setup is done. What exists now:
 
