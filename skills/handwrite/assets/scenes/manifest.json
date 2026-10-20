@@ -1,0 +1,253 @@
+{
+  "plates": {
+    "oak-mug": {
+      "file": "oak-mug.jpg",
+      "model": "google/gemini-3-pro-image",
+      "prompt": "A realistic smartphone photograph taken from directly above of one blank sheet of plain white printer paper with NO lines, NO grid and NO writing, lying perfectly flat on a warm oak wooden desk. All four corners of the sheet are fully visible and the sheet fills about 65 percent of the frame, portrait orientation. A black ballpoint pen lies beside the sheet and a white coffee mug sits in the top right corner of the desk. Soft natural window light from the left, gentle realistic shadows, slight vignette. No text anywhere.",
+      "date": "2026-09-24",
+      "cost_usd": 0.13851,
+      "size": [
+        1792,
+        2400
+      ],
+      "quad": [
+        [
+          307.01409912109375,
+          544.1717529296875
+        ],
+        [
+          1325.1097412109375,
+          544.1751098632812
+        ],
+        [
+          1331.8240966796875,
+          2007.2230224609375
+        ],
+        [
+          313.7695007324219,
+          2013.9893798828125
+        ]
+      ],
+      "rights": "generated for this skill; no third-party photo used",
+      "quad_source": "detect_quad"
+    },
+    "dark-desk": {
+      "file": "dark-desk.jpg",
+      "model": "google/gemini-3-pro-image",
+      "prompt": "A realistic smartphone photograph of ONE blank sheet of plain white paper with NO lines, NO grid, NO margin line and NO writing, lying flat. All four corners of the sheet are fully visible and nothing covers the sheet. The sheet fills about 60 percent of the frame, portrait orientation. No text, no logos, no people, no hands. Shot from directly above on a matte black desk. A graphite pencil and a smartphone lie beside the sheet. Cool daylight, crisp soft shadows.",
+      "date": "2026-09-24",
+      "cost_usd": 0.13749,
+      "size": [
+        1792,
+        2400
+      ],
+      "quad": [
+        [
+          320.3200988769531,
+          424.2731018066406
+        ],
+        [
+          1451.6817626953125,
+          424.2640075683594
+        ],
+        [
+          1471.841552734375,
+          2040.444580078125
+        ],
+        [
+          320.2896423339844,
+          2040.538330078125
+        ]
+      ],
+      "rights": "generated for this skill; no third-party photo used",
+      "quad_source": "detect_quad"
+    },
+    "marble": {
+      "file": "marble.jpg",
+      "model": "google/gemini-3-pro-image",
+      "prompt": "A realistic smartphone photograph of ONE blank sheet of plain white paper with NO lines, NO grid, NO margin line and NO writing, lying flat. All four corners of the sheet are fully visible and nothing covers the sheet. The sheet fills about 60 percent of the frame, portrait orientation. No text, no logos, no people, no hands. Shot from directly above on white-grey marble. A gold pen and a small eucalyptus sprig lie beside the sheet. Bright airy light.",
+      "date": "2026-09-24",
+      "cost_usd": 0.13939,
+      "size": [
+        1792,
+        2400
+      ],
+      "quad": [
+        [
+          240,
+          390
+        ],
+        [
+          1372,
+          398
+        ],
+        [
+          1384,
+          2005
+        ],
+        [
+          241,
+          2014
+        ]
+      ],
+      "rights": "generated for this skill; no third-party photo used",
+      "quad_source": "set by hand from full-resolution corner crops; the detector merged the sheet with a bright surface"
+    },
+    "study-desk": {
+      "file": "study-desk.jpg",
+      "model": "google/gemini-3-pro-image",
+      "prompt": "A realistic smartphone photograph of ONE blank sheet of plain white paper with NO lines, NO grid, NO margin line and NO writing, lying flat. All four corners of the sheet are fully visible and nothing covers the sheet. The sheet fills about 60 percent of the frame, portrait orientation. No text, no logos, no people, no hands. Shot from directly above on a light wooden student desk with the corner of a closed laptop, two highlighters and a closed textbook with a plain cover around the sheet. Overhead room light.",
+      "date": "2026-09-24",
+      "cost_usd": 0.13815,
+      "size": [
+        1792,
+        2400
+      ],
+      "quad": [
+        [
+          373,
+          630
+        ],
+        [
+          1323,
+          632
+        ],
+        [
+          1416,
+          2074
+        ],
+        [
+          277,
+          2074
+        ]
+      ],
+      "rights": "generated for this skill; no third-party photo used",
+      "quad_source": "set by hand from full-resolution corner crops; the detector merged the sheet with a bright surface"
+    },
+    "lamp-angle": {
+      "file": "lamp-angle.jpg",
+      "model": "google/gemini-3-pro-image",
+      "prompt": "A realistic smartphone photograph of ONE blank sheet of plain white paper with NO lines, NO grid, NO margin line and NO writing, lying flat. All four corners of the sheet are fully visible and nothing covers the sheet. The sheet fills about 60 percent of the frame, portrait orientation. No text, no logos, no people, no hands. Shot at a slight angle, about 20 degrees from vertical, so the sheet shows gentle perspective, on a walnut table in the evening under a warm desk lamp from the upper right, warm pools of light and soft falloff.",
+      "date": "2026-09-24",
+      "cost_usd": 0.13844,
+      "size": [
+        1792,
+        2400
+      ],
+      "quad": [
+        [
+          392,
+          563
+        ],
+        [
+          1355,
+          564
+        ],
+        [
+          1735,
+          1857
+        ],
+        [
+          92,
+          1890
+        ]
+      ],
+      "rights": "generated for this skill; no third-party photo used",
+      "quad_source": "set by hand from full-resolution corner crops; the detector merged the sheet with a bright surface"
+    },
+    "window-shadow": {
+      "file": "window-shadow.jpg",
+      "model": "google/gemini-3-pro-image",
+      "prompt": "A realistic smartphone photograph of ONE blank sheet of plain white paper with NO lines, NO grid, NO margin line and NO writing, lying flat. All four corners of the sheet are fully visible and nothing covers the sheet. The sheet fills about 60 percent of the frame, portrait orientation. No text, no logos, no people, no hands. Shot from directly above on a pale linen tablecloth in afternoon sun, with soft shadows of a window frame falling diagonally across part of the sheet and the table.",
+      "date": "2026-09-24",
+      "cost_usd": 0.13847,
+      "size": [
+        1792,
+        2400
+      ],
+      "quad": [
+        [
+          376,
+          459
+        ],
+        [
+          1438,
+          460
+        ],
+        [
+          1446,
+          1983
+        ],
+        [
+          369,
+          1974
+        ]
+      ],
+      "rights": "generated for this skill; no third-party photo used",
+      "quad_source": "set by hand from full-resolution corner crops; the detector merged the sheet with a bright surface"
+    },
+    "clipboard": {
+      "file": "clipboard.jpg",
+      "model": "google/gemini-3-pro-image",
+      "prompt": "A realistic smartphone photograph of ONE blank sheet of plain white paper with NO lines, NO grid, NO margin line and NO writing, lying flat. All four corners of the sheet are fully visible and nothing covers the sheet. The sheet fills about 60 percent of the frame, portrait orientation. No text, no logos, no people, no hands. The sheet is held on a brown hardboard clipboard with a metal clip at the top, the clipboard lying on a grey sofa cushion, shot from above in soft daylight.",
+      "date": "2026-09-24",
+      "cost_usd": 0.13835,
+      "size": [
+        1792,
+        2400
+      ],
+      "quad": [
+        [
+          320.10003662109375,
+          417.7693176269531
+        ],
+        [
+          1491.670654296875,
+          404.2918395996094
+        ],
+        [
+          1538.9478759765625,
+          1986.773193359375
+        ],
+        [
+          306.4651184082031,
+          1993.53125
+        ]
+      ],
+      "rights": "generated for this skill; no third-party photo used",
+      "quad_source": "detect_quad"
+    },
+    "concrete": {
+      "file": "concrete.jpg",
+      "model": "google/gemini-3-pro-image",
+      "prompt": "A realistic smartphone photograph of ONE blank sheet of plain white paper with NO lines, NO grid, NO margin line and NO writing, lying flat. All four corners of the sheet are fully visible and nothing covers the sheet. The sheet fills about 60 percent of the frame, portrait orientation. No text, no logos, no people, no hands. Shot from directly above on a light grey concrete surface with a black fineliner and a pair of glasses beside the sheet. Even overcast daylight.",
+      "date": "2026-09-24",
+      "cost_usd": 0.13776,
+      "size": [
+        1792,
+        2400
+      ],
+      "quad": [
+        [
+          386.8514709472656,
+          424.3336486816406
+        ],
+        [
+          1518.230712890625,
+          410.8934631347656
+        ],
+        [
+          1538.3740234375,
+          2040.505615234375
+        ],
+        [
+          393.617431640625,
+          2040.5726318359375
+        ]
+      ],
+      "rights": "generated for this skill; no third-party photo used",
+      "quad_source": "detect_quad"
+    }
+  },
+  "spent_usd": 1.10656
+}
