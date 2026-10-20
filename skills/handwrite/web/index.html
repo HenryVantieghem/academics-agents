@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hyperwrite</title>
+<style>
+:root{
+  --bg:#f7f6f3; --panel:#fff; --line:#e3e0d9; --ink:#1a1a1c; --muted:#6c6a64;
+  --accent:#2440c4; --good:#1d7a4d; --warn:#b4541a; --radius:10px;
+}
+:root:not([data-theme=light]) @media (prefers-color-scheme:dark){}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --bg:#141413; --panel:#1d1d1b; --line:#2f2f2c; --ink:#eceae4; --muted:#96938b;
+  --accent:#8fa2ff; --good:#5fd39a; --warn:#e9a06a;
+}}
+:root[data-theme=dark]{--bg:#141413;--panel:#1d1d1b;--line:#2f2f2c;--ink:#eceae4;
+  --muted:#96938b;--accent:#8fa2ff;--good:#5fd39a;--warn:#e9a06a;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.5 ui-sans-serif,-apple-system,"Segoe UI",Inter,sans-serif}
+header{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  padding:20px 16px 12px;max-width:1500px;margin:0 auto}
+h1{font:600 21px/1.2 ui-serif,Georgia,serif;margin:0;letter-spacing:-.01em}
+header p{margin:0;color:var(--muted);font-size:13px}
+main{display:grid;gap:14px;padding:0 16px 40px;max-width:1500px;margin:0 auto;
+  grid-template-columns:300px minmax(0,1fr) minmax(0,1fr)}
+@media(max-width:1100px){main{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px}
+.card h2{font:600 11px/1 ui-sans-serif;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 12px}
+label{display:block;font-size:12px;color:var(--muted);margin:10px 0 3px}
+select,input[type=text],input[type=number],textarea{width:100%;background:var(--bg);
+  color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:7px 9px;
+  font:inherit;font-size:13px}
+textarea{min-height:420px;resize:vertical;font:13px/1.65 ui-monospace,SFMono-Regular,monospace}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.knob{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.knob b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+button{width:100%;background:var(--accent);color:#fff;border:0;border-radius:8px;
+  padding:11px;font:600 14px/1 inherit;cursor:pointer}
+button:disabled{opacity:.55;cursor:default}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);
+  margin-top:8px}
+.pages img{width:100%;border-radius:6px;border:1px solid var(--line);display:block;
+  margin-bottom:12px}
+.empty{color:var(--muted);font-size:13px;text-align:center;padding:46px 12px;
+  border:1px dashed var(--line);border-radius:8px}
+.metric{display:grid;grid-template-columns:132px 1fr 46px;gap:8px;align-items:center;
+  font-size:12px;margin:5px 0}
+.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.score{font:700 30px/1 ui-serif,Georgia,serif;font-variant-numeric:tabular-nums}
+.score small{font:400 12px/1 ui-sans-serif;color:var(--muted);margin-left:6px}
+.ref{font-size:11.5px;color:var(--muted);margin-top:10px;border-top:1px solid var(--line);
+  padding-top:9px}
+.err{color:var(--warn);font-size:12.5px;margin-top:9px;white-space:pre-wrap}
+details{margin-top:12px}summary{cursor:pointer;font-size:12px;color:var(--muted)}
+input[type=file]{width:100%;font-size:12px;color:var(--muted)}
+.note{font-size:11.5px;color:var(--muted);margin-top:3px}
+.pages a{display:block;font-size:12.5px;color:var(--accent);margin:-6px 0 14px}
+</style></head><body>
+
+<header>
+  <h1>Hyperwrite</h1>
+  <p>Text to a page someone wrote by hand. Runs locally &mdash; nothing leaves this machine.</p>
+</header>
+
+<main>
+  <section class="card" id="settings">
+    <h2>Settings</h2>
+    <div class="row">
+      <div><label>Output</label><select id="mode">
+        <option value="print">Print (clean page)</option><option value="photo">Photo (desk scene)</option>
+      </select></div>
+      <div><label>Scene</label><select id="scene"></select></div>
+    </div>
+    <div class="row">
+      <div><label>View</label><select id="view">
+        <option>wide</option><option selected>closer</option><option>closest</option>
+      </select></div>
+      <div><label>Realism</label><select id="realism"></select></div>
+    </div>
+    <label>Paper</label><select id="paper"></select>
+    <label for="paperfile">Paper image <span style="opacity:.6">(.png, .jpg: a photo of your sheet)</span></label>
+    <input type="file" id="paperfile" accept=".png,.jpg,.jpeg">
+    <div class="note" id="paperfile_note">The ruling above is drawn on top; pick <i>plain</i> or <i>blank</i> to keep only the photo's own lines.</div>
+    <div class="row">
+      <div><label>Format</label><select id="format"></select></div>
+      <div><label>Ink</label><select id="ink"></select></div>
+    </div>
+    <label>Hand</label><select id="font"></select>
+    <label for="fontfile">Your own font <span style="opacity:.6">(.ttf, .otf, used instead of the hand above)</span></label>
+    <input type="file" id="fontfile" accept=".ttf,.otf">
+    <div class="row">
+      <div><label>Capture</label><select id="capture">
+        <option value="scan">Scan</option><option value="photo">Photo</option>
+        <option value="print">Print (clean)</option>
+      </select></div>
+      <div><label>DPI</label><select id="dpi">
+        <option>140</option><option selected>200</option><option>300</option>
+      </select></div>
+    </div>
+    <div class="row">
+      <div><label for="effect">Page effect</label><select id="effect"></select></div>
+      <div><label for="margin_top">Top margin (mm)</label>
+        <input type="number" id="margin_top" min="0" max="80" step="1" placeholder="the paper's"></div>
+    </div>
+
+    <details open><summary>The hand</summary>
+      <div data-knob="size" data-min="3.6" data-max="6" data-step=".1" data-val="4.6">x-height (mm)</div>
+      <div data-knob="messiness" data-min="0.3" data-max="1.9" data-step=".05" data-val="1">messiness</div>
+      <div data-knob="slant" data-min="-14" data-max="6" data-step="1" data-val="-4">slant</div>
+      <div data-knob="drift" data-min="0.05" data-max="0.45" data-step=".01" data-val="0.34">baseline drift</div>
+      <div data-knob="linestart" data-min="0" data-max="1.5" data-step=".1" data-val="1">line-start scatter</div>
+      <div data-knob="letter_spacing" data-min="-0.05" data-max="0.3" data-step=".01" data-val="0">letter spacing (em)</div>
+      <div data-knob="word_space" data-min="0.8" data-max="2.4" data-step=".05" data-val="1.35">word spacing</div>
+    </details>
+
+    <details open><summary>Letterforms</summary>
+      <div data-knob="variants" data-min="1" data-max="28" data-step="1" data-val="20">forms per letter</div>
+      <div data-knob="variation" data-min="0" data-max="1.3" data-step=".05" data-val="0.85">how different they are</div>
+    </details>
+
+    <details open><summary>Ink &amp; paper</summary>
+      <div data-knob="pressure" data-min="0" data-max="1.6" data-step=".1" data-val="1">pressure swing</div>
+      <div data-knob="grain" data-min="0" data-max="0.8" data-step=".05" data-val="0.4">paper through ink</div>
+      <div data-knob="bleed" data-min="0" data-max="1.6" data-step=".1" data-val="1">capillary bleed</div>
+      <div data-knob="pool" data-min="0" data-max="1.6" data-step=".1" data-val="1">ink pooling</div>
+      <div data-knob="skip" data-min="0" data-max="1" data-step=".05" data-val="0.35">ballpoint skip</div>
+      <div data-knob="showthrough" data-min="0" data-max="1.5" data-step=".1" data-val="1">show-through</div>
+    </details>
+
+    <label>Seed <span style="opacity:.6">(the identity of the hand)</span></label>
+    <input type="number" id="seed" value="7">
+    <button id="go" style="margin-top:14px">Generate</button>
+    <button class="ghost" id="pdf" disabled>Download PDF</button>
+    <button class="ghost" id="zip" disabled>Download every page (ZIP of PNGs)</button>
+    <div class="err" id="err"></div>
+  </section>
+
+  <section class="card">
+    <h2>Text</h2>
+    <textarea id="text" spellcheck="false"></textarea>
+  </section>
+
+  <section class="card">
+    <h2>Result</h2>
+    <div id="scorebox" hidden>
+      <div class="score"><span id="scoreval">–</span><small>/100 forensic realism</small></div>
+      <div id="metrics"></div>
+      <div class="ref">Measured on the same scale: a pure font page <b>22</b> &middot;
+        handtextai.com <b>67</b> &middot; a real pen on paper <b>100</b>.
+        Scores move about &plusmn;5 between seeds, so treat a 3-point difference as noise.</div>
+    </div>
+    <div id="pages" class="pages"><div class="empty">Write something, then Generate.</div></div>
+  </section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const SAMPLE = `The Impact of Urbanization on Local Ecosystems
+
+Subject: Introduction to Environmental Science
+Due Date: March 8, 2025
+
+1. Introduction
+
+Urbanization, the increasing concentration of population in urban areas, presents significant environmental challenges. These include habitat loss, pollution of air, water and noise, altered hydrological cycles, and the urban heat island effect.`;
+$("#text").value = SAMPLE;
+
+// turn every [data-knob] div into a labelled slider
+document.querySelectorAll("[data-knob]").forEach(d => {
+  const k = d.dataset.knob, label = d.textContent;
+  d.textContent = "";
+  d.innerHTML = `<div class="knob"><span>${label}</span><b id="v_${k}">${d.dataset.val}</b></div>
+    <input type="range" id="k_${k}" min="${d.dataset.min}" max="${d.dataset.max}"
+           step="${d.dataset.step}" value="${d.dataset.val}">`;
+  $(`#k_${k}`).addEventListener("input", e => $(`#v_${k}`).textContent = e.target.value);
+});
+
+const fill = (el, list, sel) => {
+  el.innerHTML = list.map(v => `<option${v === sel ? " selected" : ""}>${v}</option>`).join("");
+};
+fetch("/api/fonts").then(r => r.json()).then(d => {
+  fill($("#font"), d.fonts, "reenie");
+  fill($("#paper"), d.papers, "college");
+  fill($("#ink"), d.inks, "blue");
+  fill($("#format"), d.formats, "a4");
+  fill($("#scene"), d.scenes, "random");
+  fill($("#realism"), ["", ...d.realism], "");
+  fill($("#effect"), d.effects, "none");
+});
+
+// uploads travel as base64 inside the generate request; the server stores them by hash
+const uploads = { font: null, paper: null }, reading = {};
+const readUpload = (input, key) => input.addEventListener("change", () => {
+  const f = input.files[0];
+  uploads[key] = null;
+  if (!f) { delete reading[key]; return; }
+  // Generate waits for this, so a quick click cannot render without the file
+  reading[key] = new Promise((done, fail) => {
+    const r = new FileReader();
+    r.onload = () => { uploads[key] = { name: f.name, data: r.result.split(",", 2)[1] }; done(); };
+    r.onerror = () => fail(new Error(`could not read ${f.name}`));
+    r.readAsDataURL(f);
+  });
+});
+readUpload($("#fontfile"), "font");
+readUpload($("#paperfile"), "paper");
+// a scanner app hands back a clean, flat page, so the scanner effect starts from Print
+$("#effect").addEventListener("change", e => {
+  if (e.target.value === "scanner") $("#capture").value = "print";
+});
+
+const knob = k => parseFloat($(`#k_${k}`).value);
+function settings() {
+  const s = {
+    output: { mode: $("#mode").value, scene: $("#scene").value, view: $("#view").value },
+    paper: { style_id: $("#paper").value, format_id: $("#format").value,
+             margin_top: $("#margin_top").value },
+    font:  { family: $("#font").value, size: knob("size"), ink: $("#ink").value,
+             letter_spacing: knob("letter_spacing") },
+    effects: { variants: knob("variants"), variation: knob("variation"),
+               drift: knob("drift"), pressure: knob("pressure"), grain: knob("grain"),
+               bleed: knob("bleed"), pool: knob("pool"), skip: knob("skip"),
+               showthrough: knob("showthrough"), capture: $("#capture").value,
+               realism: $("#realism").value, effect: $("#effect").value },
+    general: { messiness: knob("messiness"), slant: knob("slant"),
+               linestart: knob("linestart"), word_space: knob("word_space"),
+               dpi: $("#dpi").value, seed: $("#seed").value, max_pages: 12 }
+  };
+  if (uploads.font) s.font.upload = uploads.font;
+  if (uploads.paper) s.paper.upload = uploads.paper;
+  return s;
+}
+
+let gid = null;
+const NICE = { glyph_uniqueness: "letterform variety", ink_flatness: "ink variation",
+               baseline_wander: "baseline wander", line_start_px: "line-start scatter",
+               paper_life: "paper texture" };
+
+$("#go").addEventListener("click", async () => {
+  const btn = $("#go"); btn.disabled = true; btn.textContent = "Rendering…";
+  $("#err").textContent = "";
+  try {
+    await Promise.all(Object.values(reading));
+    const r = await fetch("/api/generate", { method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: $("#text").value, settings: settings(), score: true }) });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || "render failed");
+    gid = d.generation_id;
+    $("#pages").innerHTML = d.pages
+      .map((p, i) => `<img alt="page ${i + 1}" src="/api/page/${gid}/${p}">
+        <a href="/api/page/${gid}/${p}" download="page-${String(i + 1).padStart(2, "0")}.png">Download page ${i + 1} (PNG)</a>`)
+      .join("");
+    $("#pdf").disabled = false;
+    $("#zip").disabled = false;
+    if (d.forensic) {
+      $("#scorebox").hidden = false;
+      $("#scoreval").textContent = d.forensic.forensic_score;
+      $("#metrics").innerHTML = Object.entries(d.forensic.normalised)
+        .map(([k, v]) => `<div class="metric"><span>${NICE[k] || k}</span>
+          <span class="bar"><i style="width:${Math.round((v || 0) * 100)}%"></i></span>
+          <span style="text-align:right">${v === null ? "–" : Math.round(v * 100)}</span></div>`)
+        .join("");
+    }
+  } catch (e) {
+    $("#err").textContent = e.message;
+  } finally {
+    btn.disabled = false; btn.textContent = "Generate";
+  }
+});
+
+const download = (endpoint, name) => async () => {
+  const r = await fetch(endpoint, { method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ generation_id: gid }) });
+  if (!r.ok) { $("#err").textContent = `${name} failed`; return; }
+  const url = URL.createObjectURL(await r.blob());
+  const a = document.createElement("a");
+  a.href = url; a.download = name; a.click();
+  URL.revokeObjectURL(url);
+};
+$("#pdf").addEventListener("click", download("/api/pdf", "handwritten.pdf"));
+$("#zip").addEventListener("click", download("/api/zip", "handwritten-pages.zip"));
+</script></body></html>

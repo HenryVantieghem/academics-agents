@@ -1,0 +1,8 @@
+evals/results/
+glyphsets/*/sheet-*.png
+__pycache__/
+*.pyc
+.DS_Store
+*.bak-*
+assets/fonts/
+evals/parity/out/

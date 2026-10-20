@@ -364,6 +364,23 @@ fails with a confusing "CANVAS_TOKEN is not set" on a token you just pasted.
 
 ---
 
+## Handwritten notes (optional add-on)
+
+[`skills/handwrite/`](skills/handwrite/) turns Markdown notes into pages that look written by
+hand: a PDF, PNG, JPG or ZIP with headings, lists, tables and maths written as pen strokes. It is
+the same tool the author's own academics agent uses for study sheets and handwritten notes.
+
+It is separate from the Canvas engine and is the one part of this repo with dependencies
+(`pip install pillow numpy reportlab pypdf`), so the core stays stdlib-only.
+
+```bash
+cp -R skills/handwrite ~/.claude/skills/handwrite     # then /handwrite in Claude Code or Codex
+bash ~/.claude/skills/handwrite/scripts/test.sh       # expect: 17 passed, 0 failed
+python3 ~/.claude/skills/handwrite/scripts/hyperwrite.py --file notes.md --out notes.pdf --preset notes --seed 7
+```
+
+Full setup, including how to use your own handwriting: [skills/handwrite/INSTALL.md](skills/handwrite/INSTALL.md).
+
 ## Design notes
 
 **Pagination.** Canvas returns 10 items and truncates silently. Every list call
@@ -405,6 +422,7 @@ repo submits anything; that is your action.
 | [docs/assignment-production.md](docs/assignment-production.md) | How to produce a graded artifact without the eight failure modes that cost marks |
 | [docs/troubleshooting.md](docs/troubleshooting.md) | Every error message, matched to its fix |
 | [templates/](templates/) | The course-context and sub-skill stubs the agent fills in |
+| [skills/handwrite/](skills/handwrite/) | Optional handwriting skill: Markdown notes to hand-written PDF pages |
 | [.cursor/rules/](.cursor/rules/) | Project rule so Cursor's agent loads `SKILL.md` automatically |
 
 ## Contributing
